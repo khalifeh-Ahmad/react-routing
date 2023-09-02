@@ -1,17 +1,51 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import Rooot from "./routes/Rooot";
+import Home from "./routes/Home";
+import Contact from "./routes/Contact";
+import Faq from "./routes/Faq";
+import ErrorPage from "./routes/ErrorPage";
+import UserLayout from "./routes/UserLayout";
+import UserInfo from "./routes/UserInfo";
+import UserEdit from "./routes/UserEdit";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const routes = createBrowserRouter([
+  {
+    path: "/",
+    element: <Rooot />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
+      {
+        path: "faq",
+        element: <Faq />,
+      },
+    ],
+  },
+  {
+    path: "/user",
+    element: <UserLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <h1>Welcome</h1> },
+      {
+        path: ":userId/edit",
+        element: <UserEdit />,
+      },
+      {
+        path: "info",
+        element: <UserInfo />,
+      },
+    ],
+  },
+]);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RouterProvider router={routes} />);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
